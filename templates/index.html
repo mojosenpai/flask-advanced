@@ -2,6 +2,10 @@
 {% block title %}Home{% endblock %}
 {% block content %}
 <h1>Welcome to my site</h1>
+{%for post in posts%}
+<h2>{{post.title}}</h2>
+<p>{{post.desc}}</p>
+{%endfor%}
 <a href={{url_for('login')}}>Login</a>
 <br/>
 <a href={{url_for('register')}}>register</a>

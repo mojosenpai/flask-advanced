@@ -93,11 +93,20 @@ def logout():
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    posts = Post.query.all()
+    return render_template('index.html', posts=posts)
 
 @app.route('/dashboard')
 @login_required
 def dashboard():
     return render_template('dashboard.html', current_user=current_user)
 
-app.run(debug=True)
+@app.route('/new', methods=['GET', 'POST'])
+@login_required
+def new_post():
+    if request.method == 'GET':
+        return render_template('new_post.html')
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
