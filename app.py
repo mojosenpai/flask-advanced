@@ -4,6 +4,7 @@ from flask_login import UserMixin, LoginManager, login_user, logout_user, login_
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length
+from wtforms.widgets import TextArea
 from flask_bcrypt import Bcrypt
 from datetime import datetime
 
@@ -59,6 +60,12 @@ class LoginForm(FlaskForm):
                            render_kw={'placeholder': 'password...'})
     submit = SubmitField('Login')
 
+class PostForm(FlaskForm):
+    title = StringField(validators=[InputRequired()])
+    tags = StringField(validators=[InputRequired()])
+    content = StringField(validators=[InputRequired()], widget=TextArea())
+    submit = SubmitField('Create Post')
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -99,13 +106,25 @@ def index():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('dashboard.html', current_user=current_user)
+    posts = Post.query.filter_by(author_id=current_user.id)
+    return render_template('dashboard.html', current_user=current_user, posts=posts)
 
 @app.route('/new', methods=['GET', 'POST'])
 @login_required
 def new_post():
-    if request.method == 'GET':
-        return render_template('new_post.html')
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(title=form.title.data,
+                    desc=form.content.data)
+        post.author = current_user
+        form.title.data = ''
+        form.tags.data = ''
+        form.content.data = ''
+        db.session.add(post)
+        db.session.commit()
+        
+    return render_template('new_post.html', form=form)
+
 
 
 if __name__ == '__main__':

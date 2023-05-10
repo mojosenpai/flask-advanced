@@ -3,5 +3,11 @@
 {% block content %}
 <h1>Login Successful</h1>
 <p>Welcome back, {{current_user.username}}</p>
+{%for post in posts%}
+<h2>{{post.title}}</h2>
+<i>{{post.date_created}}</i>
+<p>{{post.desc}}</p>
+{%endfor%}
+<a href='{{url_for('new_post')}}'>Create New Post</a>
 <a href={{url_for('logout')}}>Logout</a>
 {% endblock %}

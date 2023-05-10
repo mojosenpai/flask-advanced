@@ -3,8 +3,10 @@
 {% block content %}
 <h1>Welcome to my site</h1>
 {%for post in posts%}
+<div class='single-post'>
 <h2>{{post.title}}</h2>
 <p>{{post.desc}}</p>
+</div>
 {%endfor%}
 <a href={{url_for('login')}}>Login</a>
 <br/>

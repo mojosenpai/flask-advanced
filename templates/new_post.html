@@ -2,4 +2,17 @@
 {%block title%}Create New Post{%endblock%}
 {%block content%}
 <h1>Create New Post</h1>
+<form method='POST' action="">
+    {{form.hidden_tag()}}
+    <label for='title'>Title:</label>
+    {{form.title}}
+    <br/>
+    <label for='tags'>Tags:</label>
+    {{form.tags}}
+    <br/>
+    <label for='content'>Content:</label>
+    {{form.content}}
+    <br/>
+    {{form.submit}}
+</form>
 {%endblock%}
