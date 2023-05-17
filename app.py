@@ -66,6 +66,9 @@ class PostForm(FlaskForm):
     content = StringField(validators=[InputRequired()], widget=TextArea())
     submit = SubmitField('Create Post')
 
+
+
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
