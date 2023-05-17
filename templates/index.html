@@ -5,6 +5,7 @@
 {%for post in posts%}
 <div class='single-post'>
 <h2>{{post.title}}</h2>
+<p>{%for tag in post.id_labeled%} {{tag.name}}{%endfor%}</p>
 <p>{{post.desc}}</p>
 </div>
 {%endfor%}

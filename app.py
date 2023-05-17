@@ -116,6 +116,14 @@ def new_post():
     if form.validate_on_submit():
         post = Post(title=form.title.data,
                     desc=form.content.data)
+        tags = form.tags.data.split(',')
+        for tag in tags:
+            tag_in_db = Category.query.filter_by(name=tag).first()
+            if not tag_in_db:
+                tag_in_db = Category(name=tag)
+            post.id_labeled.append(tag_in_db)
+            db.session.add(tag_in_db)
+            db.session.commit()
         post.author = current_user
         form.title.data = ''
         form.tags.data = ''

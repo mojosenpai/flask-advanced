@@ -5,6 +5,7 @@
 <p>Welcome back, {{current_user.username}}</p>
 {%for post in posts%}
 <h2>{{post.title}}</h2>
+<p>{%for tag in post.id_labeled%} {{tag.name}}{%endfor%}</p>
 <i>{{post.date_created}}</i>
 <p>{{post.desc}}</p>
 {%endfor%}
