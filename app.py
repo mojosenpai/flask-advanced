@@ -1,4 +1,4 @@
-from flask import Flask, url_for, render_template, redirect, request
+from flask import Flask, url_for, render_template, redirect, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, LoginManager, login_user, logout_user, login_required, current_user
 from flask_wtf import FlaskForm
@@ -112,6 +112,11 @@ def dashboard():
     posts = Post.query.filter_by(author_id=current_user.id)
     return render_template('dashboard.html', current_user=current_user, posts=posts)
 
+@app.route('/by/<name>')
+def written_by(name):
+    posts = Post.query.filter_by(author_id=name)
+    return render_template('index.html', posts=posts)
+
 @app.route('/new', methods=['GET', 'POST'])
 @login_required
 def new_post():
@@ -136,7 +141,16 @@ def new_post():
         
     return render_template('new_post.html', form=form)
 
-
+@app.route('/api/all')
+def get_all():
+    posts = Post.query.all()
+    response = []
+    for post in posts:
+        current_post = {'title': post.title,
+                'author': post.author.username,
+                'text': post.desc}
+        response.append(current_post)
+    return jsonify(response)
 
 if __name__ == '__main__':
     app.run(debug=True)
