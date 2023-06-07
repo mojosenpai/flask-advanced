@@ -127,11 +127,14 @@ def new_post():
     if form.validate_on_submit():
         picture = form.picture.data
         if picture:
-            filename = str(Post.query.count() + 1) +'.' + picture.filename.split('.')[-1]
+            filename = str(Post.query.count() + 1) + '_' + picture.filename.split('.')[0] +'.' + picture.filename.split('.')[-1]
             filedir = os.path.join(os.path.abspath(os.path.dirname(__file__)), app.config['UPLOAD_FOLDER'], filename)
             picture.save(filedir)
-
-        post = Post(title=form.title.data,
+            post = Post(title=form.title.data,
+                    desc=form.content.data,
+                    image = filename)
+        else:
+            post = Post(title=form.title.data,
                     desc=form.content.data)
         tags = form.tags.data.split(',')
         for tag in tags:
