@@ -2,16 +2,18 @@ from flask import Flask, url_for, render_template, redirect, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, LoginManager, login_user, logout_user, login_required, current_user
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, FileField
 from wtforms.validators import InputRequired, Length
 from wtforms.widgets import TextArea
 from flask_bcrypt import Bcrypt
 from datetime import datetime
+import os
 
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SECRET_KEY'] = 'thisismysecretkey'
+app.config['UPLOAD_FOLDER'] = 'static/pictures'
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -64,6 +66,7 @@ class PostForm(FlaskForm):
     title = StringField(validators=[InputRequired()])
     tags = StringField(validators=[InputRequired()])
     content = StringField(validators=[InputRequired()], widget=TextArea())
+    picture = FileField()
     submit = SubmitField('Create Post')
 
 
@@ -122,6 +125,12 @@ def written_by(name):
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
+        picture = form.picture.data
+        if picture:
+            filename = str(Post.query.count() + 1) +'.' + picture.filename.split('.')[-1]
+            filedir = os.path.join(os.path.abspath(os.path.dirname(__file__)), app.config['UPLOAD_FOLDER'], filename)
+            picture.save(filedir)
+
         post = Post(title=form.title.data,
                     desc=form.content.data)
         tags = form.tags.data.split(',')

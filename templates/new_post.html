@@ -2,7 +2,7 @@
 {%block title%}Create New Post{%endblock%}
 {%block content%}
 <h1>Create New Post</h1>
-<form method='POST' action="">
+<form method='POST' action="" enctype='multipart/form-data'>
     {{form.hidden_tag()}}
     <label for='title'>Title:</label>
     {{form.title}}
@@ -12,6 +12,8 @@
     <br/>
     <label for='content'>Content:</label>
     {{form.content}}
+    <br/>
+    {{form.picture}}
     <br/>
     {{form.submit}}
 </form>
