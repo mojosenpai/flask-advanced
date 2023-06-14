@@ -1,6 +1,12 @@
+.blog-pic {
+    height: 100px;
+    width: 200px;
+}
 .single-post {
     border: 2px solid black;
 }
+
+
 /* body {
     background-color: red;
 } */

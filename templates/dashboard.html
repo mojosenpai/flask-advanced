@@ -7,6 +7,9 @@
 <h2>{{post.title}}</h2>
 <p>{%for tag in post.id_labeled%} {{tag.name}}{%endfor%}</p>
 <i>{{post.date_created}}</i>
+{%if post.image%}
+<img class="blog-pic" src="static/pictures/{{post.image}}" />
+{%endif%}
 <p>{{post.desc}}</p>
 {%endfor%}
 <a href='{{url_for('new_post')}}'>Create New Post</a>

@@ -107,7 +107,7 @@ def logout():
 @app.route('/')
 def index():
     posts = Post.query.all()
-    return render_template('index.html', posts=posts)
+    return render_template('index.html', posts=posts, user=current_user)
 
 @app.route('/dashboard')
 @login_required
