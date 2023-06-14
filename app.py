@@ -120,6 +120,13 @@ def written_by(name):
     posts = Post.query.filter_by(author_id=name)
     return render_template('index.html', posts=posts)
 
+@app.route('/tag/<name>')
+def posts_tagged(name):
+    tag = Category.query.filter_by(name=name).first()
+    posts = tag.posts_labeled
+    return render_template('index.html', posts=posts, user=current_user)
+
+
 @app.route('/new', methods=['GET', 'POST'])
 @login_required
 def new_post():
@@ -152,6 +159,15 @@ def new_post():
         db.session.commit()
         
     return render_template('new_post.html', form=form)
+
+@app.route('/search/<text>')
+def search(text):
+    all_posts = Post.query.all()
+    posts = []
+    for post in all_posts:
+        if text in post.desc:
+            posts.append(post)
+    return render_template('dashboard.html', posts=posts, user=current_user)
 
 @app.route('/api/all')
 def get_all():

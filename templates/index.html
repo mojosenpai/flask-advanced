@@ -9,7 +9,7 @@
 {%if post.image%}
 <img src="static/pictures/{{post.image}}" />
 {%endif%}
-<p>{%for tag in post.id_labeled%} {{tag.name}}{%endfor%}</p>
+<p>{%for tag in post.id_labeled%}<a href='tag/{{tag.name}}'>{{tag.name}},  </a>{%endfor%}</p>
 <p>{{post.desc}}</p>
 </div>
 {%endfor%}

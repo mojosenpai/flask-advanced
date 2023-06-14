@@ -28,6 +28,8 @@ for category in fakeCategories:
 for i in range(100):
     posts.append(Post(title=fake.sentence(), desc=fake.text(), author=random.choice(users)))
 
+for i in posts:
+    i.id_labeled.append(random.choice(categories))
 
 with app.app_context():
     db.session.add_all(categories)
